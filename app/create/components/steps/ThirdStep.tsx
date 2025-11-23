@@ -1,6 +1,6 @@
 import BracketView from "@/app/components/bracket/BracketView"
 import { IOption } from "@/app/components/form/Select"
-import { ITeam } from "../../page"
+import { ITeam } from "@/app/types/teams"
 
 interface IThirdStep {
   tournamenTitle: string

@@ -1,19 +1,13 @@
 import Input from "@/app/components/form/Input"
-import { ITeam } from "../../page"
+import { ITeam } from "@/app/types/teams"
 
 interface ISecondStep {
   tournamenTitle: string
-  numberOfTeams: number
   teams: ITeam[]
   setTeams: React.Dispatch<React.SetStateAction<ITeam[]>>
 }
 
-const SecondStep = ({
-  tournamenTitle,
-  numberOfTeams,
-  teams,
-  setTeams,
-}: ISecondStep) => {
+const SecondStep = ({ tournamenTitle, teams, setTeams }: ISecondStep) => {
   const handleTeamName = (id: number, name: string) => {
     setTeams((prevState) =>
       prevState.map((team) => (team.id === id ? { ...team, name } : team))

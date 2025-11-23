@@ -1,7 +1,7 @@
-import { ITeam } from "@/app/create/page"
 import { IOption } from "../form/Select"
 import { ETournamentType } from "@/app/lib/tournamentOptions"
 import BracketPlayoff from "./BracketPlayoff/BracketPlayoff"
+import { ITeam } from "@/app/types/teams"
 
 interface IBracketView {
   teams: ITeam[]

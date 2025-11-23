@@ -1,16 +1,15 @@
 import { IOption } from "@/app/components/form/Select"
-import { JSX, ReactNode } from "react"
-import { ESteps } from "../../page"
+import { PropsWithChildren } from "react"
 import classNames from "classnames"
 import Button, { ButtonType } from "@/app/components/form/Button"
+import { ESteps } from "@/app/types/steps"
 
-interface IStepsNavigation {
+interface IStepsNavigation extends PropsWithChildren {
   steps: IOption[]
-  children: ReactNode
   isNextButtonActive: boolean
-  onNextButtonClick: () => any
-  onBackButtonClick: () => any
-  onFinishClick: () => any
+  onNextButtonClick: () => void
+  onBackButtonClick: () => void
+  onFinishClick: () => void
 }
 
 const StepsNavigation = ({

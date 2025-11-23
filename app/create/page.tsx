@@ -1,15 +1,13 @@
 "use client"
 
-import { SetStateAction, useContext, useMemo, useState } from "react"
-import Input from "../components/form/Input"
-import Select, { IOption } from "../components/form/Select"
+import { useMemo, useState } from "react"
+import { IOption } from "../components/form/Select"
 import FirstStep from "./components/steps/FirstStep"
 import StepsNavigation from "./components/steps/StepsNavigation"
 import SecondStep from "./components/steps/SecondStep"
 import { useTournament } from "../context/TournamentContext"
 import {
   EMatchFormat,
-  ETournamentType,
   MATCH_FORMATS,
   NUMBER_OF_TEAMS,
   TOURNAMENT_TYPES,
@@ -19,17 +17,8 @@ import ThirdStep from "./components/steps/ThirdStep"
 import { useRouter } from "next/navigation"
 import { PATHS } from "../lib/paths"
 import { generatePlayoffMatches } from "../lib/tournamentHelpers"
-
-export enum ESteps {
-  First = "1",
-  Second = "2",
-  Third = "3",
-}
-
-export interface ITeam {
-  id: number
-  name: string
-}
+import { ESteps } from "../types/steps"
+import { ITeam } from "../types/teams"
 
 const Create = () => {
   const [steps, setSteps] = useState<IOption[]>([
@@ -90,8 +79,8 @@ const Create = () => {
           selectedNumberOfTeams
         )
       case ESteps.Second:
+        if (!selectedNumberOfTeams) return false
         return (
-          // @ts-ignore
           teams.length === +selectedNumberOfTeams?.value &&
           teams.every((team) => team.name.trim().length > 0)
         )
@@ -110,7 +99,7 @@ const Create = () => {
 
     // Initialize teams if going to Step 2
     if (nextStep.value === ESteps.Second) {
-      // @ts-ignore
+      if (!selectedNumberOfTeams) return
       const count = +selectedNumberOfTeams?.value || 0
       setTeams(
         Array(count)
@@ -132,7 +121,6 @@ const Create = () => {
     if (currentIndex <= 0) return
 
     const currentStep = steps[currentIndex]
-    const prevStep = steps[currentIndex - 1]
 
     // Clear team data when going back from Step 2
     if (currentStep.value === ESteps.Second) {
@@ -148,11 +136,17 @@ const Create = () => {
   }
 
   const finishCreation = () => {
+    if (
+      !selectedMatchFormat ||
+      !selectedTournamentType ||
+      !selectedNumberOfTeams
+    )
+      return null
+
     setTournamentData({
       title: title,
-      tournamentType: selectedTournamentType,
-      matchFormat: selectedMatchFormat,
-      //@ts-ignore
+      tournamentType: selectedTournamentType?.value,
+      matchFormat: selectedMatchFormat?.value as EMatchFormat,
       numberOfTeams: +selectedNumberOfTeams.value,
       teams: teams,
       matches: generatePlayoffMatches(teams),
@@ -185,9 +179,6 @@ const Create = () => {
         {selectedStep?.value === ESteps.Second ? (
           <SecondStep
             tournamenTitle={title}
-            numberOfTeams={
-              selectedNumberOfTeams?.value ? +selectedNumberOfTeams?.value : 0
-            }
             teams={teams}
             setTeams={setTeams}
           />

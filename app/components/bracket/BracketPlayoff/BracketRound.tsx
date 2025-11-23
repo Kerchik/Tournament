@@ -1,9 +1,5 @@
-import { ITeam } from "@/app/create/page"
+import { IBracketTeam } from "@/app/types/teams"
 import classNames from "classnames"
-
-interface IBracketTeam extends ITeam {
-  score?: number
-}
 
 interface IBracketRound {
   teams: [IBracketTeam, IBracketTeam]
@@ -13,12 +9,13 @@ interface IBracketRound {
 const BracketRound = ({ teams, isFinished = false }: IBracketRound) => {
   const winningTeam = !isFinished
     ? null
-    : teams[0].score > teams[1].score
+    : // @ts-expect-error Not gonna be undefined
+    teams[0].score > teams[1].score
     ? teams[0]
     : teams[1]
 
   return (
-    <div className="border-2 border-[#2D2D2D] rounded-sm w-full max-w-[200px]">
+    <div className="border-2 border-[#2D2D2D] rounded-sm w-[200px]">
       <div className="border-b-1 border-[#2D2D2D] flex justify-between px-2">
         <div
           className={classNames("py-1 text-gray-300", {

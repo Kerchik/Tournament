@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import { ButtonHTMLAttributes } from "react"
+import { ButtonHTMLAttributes, PropsWithChildren } from "react"
 
 export enum ButtonType {
   Primary = "primary",
@@ -8,8 +8,8 @@ export enum ButtonType {
 }
 
 interface IButton
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick, disabled"> {
-  children?: React.JSX.Element | string
+  extends PropsWithChildren,
+    Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick, disabled"> {
   variant: ButtonType
   onClick?: () => void
   additionalClassNames?: string
@@ -25,7 +25,8 @@ const Button = ({
   const variantClassnames = classNames("px-6 py-2 rounded-md", {
     "bg-[#1F8EF1] text-gray-100 cursor-pointer hover:bg-[#2D9CDB]":
       variant === ButtonType.Primary,
-    "": variant === ButtonType.Secondary,
+    "bg-gray-100 text-gray-[#1F8EF1] cursor-pointer hover:bg-gray-200":
+      variant === ButtonType.Secondary,
     "bg-gray-500 text-gray-100 cursor-not-allowed":
       variant === ButtonType.Disabled,
   })

@@ -49,7 +49,7 @@ export const NUMBER_OF_TEAMS = [
     },
 ]
 
-export const withDefaultSelection = <T extends { value: any; label: string }>(
+export const withDefaultSelection = <T extends { value: string | number; label: string }>(
   options: T[]
 ): (T & { isSelected: boolean })[] =>
   options.map((opt, idx) => ({

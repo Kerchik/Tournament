@@ -1,5 +1,5 @@
-import { IMatch, MatchStatus } from '../context/TournamentContext'
-import { ITeam } from '../create/page'
+import { ITeam } from '../types/teams'
+import { IMatch, MatchStatus } from '../types/tournament'
 
 const getTotalRounds = (numberOfTeams: number): number => {
   if (numberOfTeams < 2 || (numberOfTeams & (numberOfTeams - 1)) !== 0) {
@@ -56,7 +56,7 @@ export const generatePlayoffMatches = (teams: ITeam[]): IMatch[]  => {
 
       const match: IMatch = {
         id: matchIdCounter++,
-        status: MatchStatus.SCEDULED,
+        status: MatchStatus.SCHEDULED,
         round: {
           roundIndex: roundIndex,
           name: roundName,
