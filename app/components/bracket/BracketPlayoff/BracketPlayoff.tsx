@@ -57,35 +57,37 @@ const BracketPlayoff = ({ teams, matches = [] }: IBracketPlayoff) => {
   const placeholderTeam = { id: -1, name: "TBD" }
 
   return (
-    <div className="flex flex-row gap-8 items-center text-white">
-      {rounds.map((roundMatches, index) => (
-        <div
-          key={`round-${index}`}
-          className="flex flex-col gap-12 justify-around h-full"
-        >
-          {roundMatches.map((match) => {
-            const team1 = match.team1Id
-              ? teamsMap.get(match.team1Id) ?? placeholderTeam
-              : placeholderTeam
-            const team2 = match.team2Id
-              ? teamsMap.get(match.team2Id) ?? placeholderTeam
-              : placeholderTeam
+    <div className="w-full overflow-x-auto">
+      <div className="flex flex-row gap-8 items-center text-white">
+        {rounds.map((roundMatches, index) => (
+          <div
+            key={`round-${index}`}
+            className="flex flex-col gap-12 justify-around h-full"
+          >
+            {roundMatches.map((match) => {
+              const team1 = match.team1Id
+                ? teamsMap.get(match.team1Id) ?? placeholderTeam
+                : placeholderTeam
+              const team2 = match.team2Id
+                ? teamsMap.get(match.team2Id) ?? placeholderTeam
+                : placeholderTeam
 
-            const bracketTeams: [IBracketTeam, IBracketTeam] = [
-              { ...team1, score: match.result?.team1Score },
-              { ...team2, score: match.result?.team2Score },
-            ]
+              const bracketTeams: [IBracketTeam, IBracketTeam] = [
+                { ...team1, score: match.result?.team1Score },
+                { ...team2, score: match.result?.team2Score },
+              ]
 
-            return (
-              <BracketRound
-                key={match.id}
-                teams={bracketTeams}
-                isFinished={match.status === MatchStatus.COMPLETED}
-              />
-            )
-          })}
-        </div>
-      ))}
+              return (
+                <BracketRound
+                  key={match.id}
+                  teams={bracketTeams}
+                  isFinished={match.status === MatchStatus.COMPLETED}
+                />
+              )
+            })}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

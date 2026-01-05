@@ -73,7 +73,7 @@ const TournamentPage = () => {
   if (!tournamentData) return <NoTournamentDataMessage />
 
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       <Tabs tabs={tabs} onTabClick={handleTabClick} />
       {isMatchTabSelected &&
         (currentMatch ? (

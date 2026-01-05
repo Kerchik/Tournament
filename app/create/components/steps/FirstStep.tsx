@@ -24,7 +24,7 @@ const FirstStep = ({
   setNumberOfTeams,
 }: IFirstStep) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 sm:gap-4">
       <Input label="Title" value={title} setValue={setTitle} id="title" />
       <Select
         label="Type"

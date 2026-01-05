@@ -17,7 +17,7 @@ const SecondStep = ({ tournamenTitle, teams, setTeams }: ISecondStep) => {
   return (
     <div>
       <h1 className="text-gray-300 text-xl mb-4">{tournamenTitle}</h1>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2 sm:gap-4">
         {teams.map((team) => (
           <div key={team.id}>
             <Input

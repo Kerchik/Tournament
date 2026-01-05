@@ -28,7 +28,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TournamentProvider>{children}</TournamentProvider>
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 xl:px-0 py-4 sm:py-6">
+          <TournamentProvider>{children}</TournamentProvider>
+        </div>
       </body>
     </html>
   )
