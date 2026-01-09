@@ -8,9 +8,14 @@ import BracketPlayoff from "../components/bracket/BracketPlayoff/BracketPlayoff"
 import MatchView from "../components/match/MatchView"
 import useMatchData from "../hooks/useMatchData"
 import AllMatchesPlayedMessage from "./components/AllMatchesPlayedMessage"
+import Button, { ButtonType } from "../components/form/Button"
+import { useRouter } from "next/navigation"
+import { PATHS } from "../lib/paths"
 
 const TournamentPage = () => {
-  const { tournamentData } = useTournament()
+  const { tournamentData, setTournamentData } = useTournament()
+
+  const router = useRouter()
 
   const [tabs, setTabs] = useState<ITab[]>([
     { id: 1, title: "Match", isSelected: true },
@@ -70,6 +75,12 @@ const TournamentPage = () => {
     confirmMatchScore()
   }
 
+  const deleteTournamentData = () => {
+    setTournamentData(null)
+
+    router.push(PATHS.CREATE_PAGE)
+  }
+
   if (!tournamentData) return <NoTournamentDataMessage />
 
   return (
@@ -88,6 +99,7 @@ const TournamentPage = () => {
             }}
             resetScore={handleResetScore}
             confirmResult={handleMatchConfirmResult}
+            tournamentTitle={tournamentData?.title}
           />
         ) : (
           <AllMatchesPlayedMessage />
@@ -98,6 +110,9 @@ const TournamentPage = () => {
           matches={tournamentData?.matches}
         />
       )}
+      <Button variant={ButtonType.Danger} onClick={deleteTournamentData}>
+        Delete Tournament
+      </Button>
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { ButtonHTMLAttributes, PropsWithChildren } from "react"
 export enum ButtonType {
   Primary = "primary",
   Secondary = "secondary",
+  Danger = "danger",
   Disabled = "disabled",
 }
 
@@ -27,6 +28,8 @@ const Button = ({
       variant === ButtonType.Primary,
     "bg-gray-100 text-gray-[#1F8EF1] cursor-pointer hover:bg-gray-200":
       variant === ButtonType.Secondary,
+    "bg-red-700 text-gray-100 cursor-pointer hover:bg-red-800":
+      variant === ButtonType.Danger,
     "bg-gray-500 text-gray-100 cursor-not-allowed":
       variant === ButtonType.Disabled,
   })

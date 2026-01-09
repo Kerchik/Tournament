@@ -1,9 +1,26 @@
+"use client"
+
+import { useRouter } from "next/navigation"
+import Button, { ButtonType } from "./components/form/Button"
+import MessageBlock from "./components/messages/MessageBlock"
+import { PATHS } from "./lib/paths"
+
 export default function Home() {
+  const router = useRouter()
+
+  const startNewTournament = () => {
+    router.push(PATHS.CREATE_PAGE)
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        asfasfas
-      </main>
-    </div>
+    <MessageBlock title="Start your competition. Build your tournament structure and play through every match of the bracket stage.">
+      <Button
+        variant={ButtonType.Primary}
+        onClick={startNewTournament}
+        additionalClassNames="w-full sm:w-auto"
+      >
+        Start new tournament
+      </Button>
+    </MessageBlock>
   )
 }

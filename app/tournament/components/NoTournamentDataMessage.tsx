@@ -1,5 +1,6 @@
 "use client"
 import Button, { ButtonType } from "@/app/components/form/Button"
+import MessageBlock from "@/app/components/messages/MessageBlock"
 import { PATHS } from "@/app/lib/paths"
 import { useRouter } from "next/navigation"
 
@@ -11,15 +12,15 @@ const NoTournamentDataMessage = () => {
   }
 
   return (
-    <div className="border-2 border-[#2D2D2D] rounded-sm w-full max-w-[400px] p-4">
-      <h2 className="text-gray-300 text-lg mb-2 text-justify justify-self-center">
-        No tournament data exists. Go to the creation page to set up a new
-        tournament.
-      </h2>
-      <Button variant={ButtonType.Primary} onClick={toCreatePage}>
+    <MessageBlock title="No tournament data exists. Go to the creation page to set up a new tournament.">
+      <Button
+        variant={ButtonType.Primary}
+        onClick={toCreatePage}
+        additionalClassNames="w-full sm:w-auto"
+      >
         Create tournament
       </Button>
-    </div>
+    </MessageBlock>
   )
 }
 
