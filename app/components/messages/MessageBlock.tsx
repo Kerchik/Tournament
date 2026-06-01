@@ -1,14 +1,30 @@
 "use client"
+import classNames from "classnames"
 import { PropsWithChildren } from "react"
+
+export enum MessageBlockSize {
+  Default = "default",
+  Large = "large",
+}
 
 interface IMessageBlock extends PropsWithChildren {
   title: string | React.ReactNode
+  size?: MessageBlockSize
 }
 
-const MessageBlock = ({ title, children }: IMessageBlock) => {
+const MessageBlock = ({
+  title,
+  size = MessageBlockSize.Default,
+  children,
+}: IMessageBlock) => {
   return (
-    <div className="border-2 border-[#2D2D2D] rounded-sm w-full max-w-[400px] p-4">
-      <h2 className="text-gray-300 text-lg mb-2 text-justify">{title}</h2>
+    <div
+      className={classNames("border-2 border-[#2D2D2D] rounded-sm w-full p-4", {
+        "max-w-[400px]": size === MessageBlockSize.Default,
+        "max-w-[800px]": size === MessageBlockSize.Large,
+      })}
+    >
+      <h2 className="text-gray-300 text-lg mb-3 text-justify">{title}</h2>
       {children}
     </div>
   )

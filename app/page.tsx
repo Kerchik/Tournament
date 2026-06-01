@@ -2,8 +2,11 @@
 
 import { useRouter } from "next/navigation"
 import Button, { ButtonType } from "./components/form/Button"
-import MessageBlock from "./components/messages/MessageBlock"
+import MessageBlock, {
+  MessageBlockSize,
+} from "./components/messages/MessageBlock"
 import { PATHS } from "./lib/paths"
+import ImportTournamentDataButton from "./components/form/ImportTournamentDataButton"
 
 export default function Home() {
   const router = useRouter()
@@ -13,14 +16,22 @@ export default function Home() {
   }
 
   return (
-    <MessageBlock title="Start your competition. Build your tournament structure and play through every match of the bracket stage.">
-      <Button
-        variant={ButtonType.Primary}
-        onClick={startNewTournament}
-        additionalClassNames="w-full sm:w-auto"
+    <div className="flex justify-center">
+      <MessageBlock
+        title="Start your competition. Build your tournament structure or import it via JSON, then play through every match in the bracket stage."
+        size={MessageBlockSize.Large}
       >
-        Start new tournament
-      </Button>
-    </MessageBlock>
+        <div className="flex justify-between">
+          <Button
+            variant={ButtonType.Primary}
+            onClick={startNewTournament}
+            additionalClassNames="w-full sm:w-auto"
+          >
+            Start new tournament
+          </Button>
+          <ImportTournamentDataButton />
+        </div>
+      </MessageBlock>
+    </div>
   )
 }

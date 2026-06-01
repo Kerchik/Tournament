@@ -16,12 +16,12 @@ interface ITournamentContextType {
 }
 
 const TournamentContext = createContext<ITournamentContextType | undefined>(
-  undefined
+  undefined,
 )
 
 export const TournamentProvider = ({ children }: { children: ReactNode }) => {
   const [tournamentData, setTournamentData] = useState<ITournamentData | null>(
-    null
+    null,
   )
 
   return (

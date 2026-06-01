@@ -4,7 +4,6 @@ import { MatchStatus } from "../types/tournament"
 
 const useMatchData = () => {
   const { tournamentData, setTournamentData } = useTournament()
-
   const currentMatch = useMemo(() => {
     const matches = tournamentData?.matches
 
@@ -13,7 +12,7 @@ const useMatchData = () => {
     }
 
     const inProgressMatch = matches.find(
-      (match) => match.status === MatchStatus.IN_PROGRESS
+      (match) => match.status === MatchStatus.IN_PROGRESS,
     )
 
     if (inProgressMatch) {
@@ -27,7 +26,7 @@ const useMatchData = () => {
     if (!currentMatch) return null
 
     return tournamentData?.teams.find(
-      (team) => team.id === currentMatch.team1Id
+      (team) => team.id === currentMatch.team1Id,
     )
   }, [currentMatch])
 
@@ -35,7 +34,7 @@ const useMatchData = () => {
     if (!currentMatch) return null
 
     return tournamentData?.teams.find(
-      (team) => team.id === currentMatch.team2Id
+      (team) => team.id === currentMatch.team2Id,
     )
   }, [currentMatch])
 
@@ -148,7 +147,7 @@ const useMatchData = () => {
       const nextRoundMatchTarget = matches.find(
         (match) =>
           match.round.roundIndex === nextRoundIndex &&
-          (match.team1Id === null || match.team2Id === null)
+          (match.team1Id === null || match.team2Id === null),
       )
 
       if (nextRoundMatchTarget) {

@@ -16,7 +16,7 @@ import {
 import ThirdStep from "./components/steps/ThirdStep"
 import { useRouter } from "next/navigation"
 import { PATHS } from "../lib/paths"
-import { generatePlayoffMatches } from "../lib/tournamentHelpers"
+import { generatePlayoffMatches } from "../lib/tournamentHelpers/tournamentHelpers"
 import { ESteps } from "../types/steps"
 import { ITeam } from "../types/teams"
 
@@ -42,13 +42,13 @@ const Create = () => {
 
   const [title, setTitle] = useState("")
   const [tournamentTypes, setTournamentTypes] = useState<IOption[]>(
-    withDefaultSelection(TOURNAMENT_TYPES)
+    withDefaultSelection(TOURNAMENT_TYPES),
   )
   const [matchFormat, setMatchFormat] = useState<IOption[]>(
-    withDefaultSelection(MATCH_FORMATS)
+    withDefaultSelection(MATCH_FORMATS),
   )
   const [numberOfTeams, setNumberOfTeams] = useState<IOption[]>(
-    withDefaultSelection(NUMBER_OF_TEAMS)
+    withDefaultSelection(NUMBER_OF_TEAMS),
   )
 
   const [teams, setTeams] = useState<ITeam[]>([])
@@ -104,7 +104,7 @@ const Create = () => {
       setTeams(
         Array(count)
           .fill(0)
-          .map((_, i) => ({ id: i + 1, name: "" }))
+          .map((_, i) => ({ id: i + 1, name: "" })),
       )
     }
 
@@ -112,7 +112,7 @@ const Create = () => {
       steps.map((s, index) => ({
         ...s,
         isSelected: index === currentIndex + 1,
-      }))
+      })),
     )
   }
 
@@ -131,7 +131,7 @@ const Create = () => {
       steps.map((s, index) => ({
         ...s,
         isSelected: index === currentIndex - 1,
-      }))
+      })),
     )
   }
 
@@ -155,6 +155,10 @@ const Create = () => {
     router.push(PATHS.TOURNAMET_PAGE)
   }
 
+  const toHomePage = () => {
+    router.push(PATHS.HOME)
+  }
+
   return (
     <div>
       <StepsNavigation
@@ -163,6 +167,7 @@ const Create = () => {
         onNextButtonClick={toNextStep}
         onBackButtonClick={toPrevStep}
         onFinishClick={finishCreation}
+        onCancelClick={toHomePage}
       >
         {selectedStep?.value === ESteps.First ? (
           <FirstStep

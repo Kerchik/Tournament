@@ -44,7 +44,7 @@ const TournamentPage = () => {
       tabs.map((tab) => ({
         ...tab,
         isSelected: tab.id === selectedTabId,
-      }))
+      })),
     )
   }
 
@@ -78,7 +78,25 @@ const TournamentPage = () => {
   const deleteTournamentData = () => {
     setTournamentData(null)
 
-    router.push(PATHS.CREATE_PAGE)
+    router.push(PATHS.HOME)
+  }
+
+  const exportTournamentData = () => {
+    const jsonString = JSON.stringify(tournamentData, null, 2)
+
+    const blob = new Blob([jsonString], { type: "application/json" })
+
+    const url = window.URL.createObjectURL(blob)
+
+    const link = document.createElement("a")
+    link.href = url
+    link.download = `${tournamentData?.title.replace(/\s+/g, "_").toLowerCase()}.json`
+
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+    window.URL.revokeObjectURL(url)
   }
 
   if (!tournamentData) return <NoTournamentDataMessage />
@@ -88,19 +106,37 @@ const TournamentPage = () => {
       <Tabs tabs={tabs} onTabClick={handleTabClick} />
       {isMatchTabSelected &&
         (currentMatch ? (
-          <MatchView
-            key={currentMatch?.id}
-            firstTeam={currentMatchFirstTeam?.name as string}
-            secondTeam={currentMatchSecondTeam?.name as string}
-            format={tournamentData.matchFormat}
-            result={currentMatch?.result}
-            setScore={(winningTeam) => {
-              handleMatchScore(winningTeam)
-            }}
-            resetScore={handleResetScore}
-            confirmResult={handleMatchConfirmResult}
-            tournamentTitle={tournamentData?.title}
-          />
+          <div className="w-full max-w-4xl mx-auto">
+            <MatchView
+              key={currentMatch?.id}
+              firstTeam={currentMatchFirstTeam?.name as string}
+              secondTeam={currentMatchSecondTeam?.name as string}
+              format={tournamentData.matchFormat}
+              result={currentMatch?.result}
+              setScore={(winningTeam) => {
+                handleMatchScore(winningTeam)
+              }}
+              resetScore={handleResetScore}
+              confirmResult={handleMatchConfirmResult}
+              tournamentTitle={tournamentData?.title}
+            />
+            <div className="mt-6 flex flex-col gap-4">
+              <Button
+                variant={ButtonType.Primary}
+                onClick={exportTournamentData}
+                additionalClassNames="w-full"
+              >
+                Export data
+              </Button>
+              <Button
+                variant={ButtonType.Danger}
+                onClick={deleteTournamentData}
+                additionalClassNames="w-full"
+              >
+                Delete Tournament
+              </Button>
+            </div>
+          </div>
         ) : (
           <AllMatchesPlayedMessage />
         ))}
@@ -110,9 +146,6 @@ const TournamentPage = () => {
           matches={tournamentData?.matches}
         />
       )}
-      <Button variant={ButtonType.Danger} onClick={deleteTournamentData}>
-        Delete Tournament
-      </Button>
     </div>
   )
 }

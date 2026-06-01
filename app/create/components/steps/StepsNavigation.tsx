@@ -10,6 +10,7 @@ interface IStepsNavigation extends PropsWithChildren {
   onNextButtonClick: () => void
   onBackButtonClick: () => void
   onFinishClick: () => void
+  onCancelClick: () => void
 }
 
 const StepsNavigation = ({
@@ -19,10 +20,12 @@ const StepsNavigation = ({
   onNextButtonClick,
   onBackButtonClick,
   onFinishClick,
+  onCancelClick,
 }: IStepsNavigation) => {
   const selectedStep = steps.find((s) => s.isSelected)
-
+  const isFirstStep = selectedStep?.value === ESteps.First
   const isLastStep = steps[steps.length - 1].isSelected
+
   return (
     <>
       <nav className="flex items-center justify-between gap-4 mb-6">
@@ -37,7 +40,7 @@ const StepsNavigation = ({
                   {
                     "bg-[#1F8EF1] text-white border-[#1F8EF1]": isSelected,
                     "bg-[#1e1e1e] text-gray-400 border-[#2D2D2D]": !isSelected,
-                  }
+                  },
                 )}
               >
                 {index + 1}
@@ -48,16 +51,19 @@ const StepsNavigation = ({
       </nav>
 
       {children}
+
       <div className="flex justify-between mt-6">
-        <Button
-          additionalClassNames={classNames({
-            invisible: selectedStep?.value === ESteps.First,
-          })}
-          onClick={onBackButtonClick}
-          variant={ButtonType.Primary}
-        >
-          Back
-        </Button>
+        {isFirstStep ? (
+          <Button onClick={onCancelClick} variant={ButtonType.Secondary}>
+            Cancel
+          </Button>
+        ) : (
+          <Button onClick={onBackButtonClick} variant={ButtonType.Primary}>
+            Back
+          </Button>
+        )}
+
+        {/* Right Side Slot: Next or Start */}
         {isLastStep ? (
           <Button onClick={onFinishClick} variant={ButtonType.Primary}>
             Start

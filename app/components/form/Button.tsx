@@ -9,7 +9,8 @@ export enum ButtonType {
 }
 
 interface IButton
-  extends PropsWithChildren,
+  extends
+    PropsWithChildren,
     Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick, disabled"> {
   variant: ButtonType
   onClick?: () => void
@@ -23,7 +24,7 @@ const Button = ({
   additionalClassNames = "",
   ...buttonProps
 }: IButton) => {
-  const variantClassnames = classNames("px-6 py-2 rounded-md", {
+  const variantClassnames = classNames("px-6 py-2 rounded-md text-lg ", {
     "bg-[#1F8EF1] text-gray-100 cursor-pointer hover:bg-[#2D9CDB]":
       variant === ButtonType.Primary,
     "bg-gray-100 text-gray-[#1F8EF1] cursor-pointer hover:bg-gray-200":
