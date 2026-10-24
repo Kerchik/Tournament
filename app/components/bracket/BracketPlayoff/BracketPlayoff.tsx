@@ -2,13 +2,28 @@ import BracketRound from "./BracketRound"
 import { useMemo } from "react"
 import { IMatch, MatchStatus } from "@/app/types/tournament"
 import { IBracketTeam, ITeam } from "@/app/types/teams"
+import { IBracketEditableProps } from "@/app/types/bracket"
+import { useBracketDragAndDrop } from "@/app/hooks/useBracketDragAndDrop"
 
-interface IBracketPlayoff {
+export interface IBracketPlayoff extends IBracketEditableProps {
   teams: ITeam[]
   matches?: IMatch[]
 }
 
-const BracketPlayoff = ({ teams, matches = [] }: IBracketPlayoff) => {
+const BracketPlayoff = ({
+  teams,
+  matches = [],
+  isEditable,
+  onTeamsReorder,
+  setTeams,
+}: IBracketPlayoff) => {
+  const { draggedTeam, pointerPos, roundDragProps } = useBracketDragAndDrop({
+    teams,
+    isEditable,
+    onTeamsReorder,
+    setTeams,
+  })
+
   const effectiveMatches = useMemo(() => {
     if (matches && matches.length > 0) {
       return matches
@@ -35,7 +50,7 @@ const BracketPlayoff = ({ teams, matches = [] }: IBracketPlayoff) => {
 
   const teamsMap = useMemo(
     () => new Map(teams.map((team) => [team.id, team])),
-    [teams]
+    [teams],
   )
 
   const rounds = useMemo(() => {
@@ -57,7 +72,23 @@ const BracketPlayoff = ({ teams, matches = [] }: IBracketPlayoff) => {
   const placeholderTeam = { id: -1, name: "TBD" }
 
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="w-full overflow-x-auto relative select-none">
+      {draggedTeam && pointerPos && (
+        <div
+          className="fixed pointer-events-none z-50 px-3 py-1.5 rounded bg-blue-600 text-white text-xs font-semibold shadow-2xl border border-blue-400 select-none -translate-x-1/2 -translate-y-full flex items-center gap-1.5"
+          style={{ left: pointerPos.x, top: pointerPos.y - 12 }}
+        >
+          <svg width="8" height="12" viewBox="0 0 10 14" fill="currentColor">
+            <circle cx="2.5" cy="2.5" r="1.5" />
+            <circle cx="7.5" cy="2.5" r="1.5" />
+            <circle cx="2.5" cy="7" r="1.5" />
+            <circle cx="7.5" cy="7" r="1.5" />
+            <circle cx="2.5" cy="11.5" r="1.5" />
+            <circle cx="7.5" cy="11.5" r="1.5" />
+          </svg>
+          <span>{draggedTeam.name}</span>
+        </div>
+      )}
       <div className="flex flex-row gap-8 items-center text-white">
         {rounds.map((roundMatches, index) => (
           <div
@@ -66,10 +97,10 @@ const BracketPlayoff = ({ teams, matches = [] }: IBracketPlayoff) => {
           >
             {roundMatches.map((match) => {
               const team1 = match.team1Id
-                ? teamsMap.get(match.team1Id) ?? placeholderTeam
+                ? (teamsMap.get(match.team1Id) ?? placeholderTeam)
                 : placeholderTeam
               const team2 = match.team2Id
-                ? teamsMap.get(match.team2Id) ?? placeholderTeam
+                ? (teamsMap.get(match.team2Id) ?? placeholderTeam)
                 : placeholderTeam
 
               const bracketTeams: [IBracketTeam, IBracketTeam] = [
@@ -82,6 +113,8 @@ const BracketPlayoff = ({ teams, matches = [] }: IBracketPlayoff) => {
                   key={match.id}
                   teams={bracketTeams}
                   isFinished={match.status === MatchStatus.COMPLETED}
+                  isEditable={isEditable}
+                  {...roundDragProps}
                 />
               )
             })}

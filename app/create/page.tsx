@@ -194,6 +194,7 @@ const Create = () => {
             matchFormat={selectedMatchFormat as IOption}
             teams={teams}
             tournamentType={selectedTournamentType as IOption}
+            setTeams={setTeams}
           />
         ) : null}
       </StepsNavigation>
